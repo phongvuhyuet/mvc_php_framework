@@ -1,0 +1,15 @@
+{
+    "name": "phong/mvc_framework",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "phong vu",
+            "email": "vuphonghyuet@gmail.com"
+        }
+    ],
+    "require": {}
+}
