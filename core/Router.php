@@ -28,24 +28,32 @@ class Router {
 		}
 		if (is_string($callback)) {
 			return $this->renderView($callback);
-		}
-		return call_user_func($callback);
+		} 
+		$callback[0] = new $callback[0];
+		Application::$app->controller = $callback[0];
+		return call_user_func($callback, $this->request);
 	}
 
-	private function renderView($view) {
+	public function renderView($view, $params = []) {
 		$layoutContent = $this->renderLayout();
-		$viewContent = $this->renderViewOnly($view);
+		$viewContent = $this->renderViewOnly($view, $params);
 		return str_replace('{{content}}', $viewContent, $layoutContent);
 	}
 
-	private function renderViewOnly($view) {
+	private function renderViewOnly($view, $params) {
+
 		ob_start();
+		foreach ($params as $key => $value) {
+			$$key = $value;
+		}
+
 		include_once  Application::$ROOT_DIR."/views/{$view}.php";
 		return ob_get_clean();
 	}
 	private function renderLayout() {
+		$layout = Application::$app->controller->layout;
 		ob_start();
-		include_once  Application::$ROOT_DIR. "/views/layouts/main.php";
+		include_once  Application::$ROOT_DIR. "/views/layouts/$layout.php";
 		return ob_get_clean();
 	}
 
