@@ -1,5 +1,5 @@
 <?php
-namespace core;
+namespace app\core;
 class Router {
 	protected array $routes = [];
 	public Request $request;

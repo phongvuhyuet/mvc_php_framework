@@ -1,9 +1,11 @@
 <?php
 
-namespace controllers;
-use core\Controller;
-use core\Request;
-use models\RegisterModel;
+namespace app\controllers;
+
+use app\core\Application;
+use app\core\Controller;
+use app\core\Request;
+use app\models\User;
 
 class AuthController extends Controller {
 
@@ -16,20 +18,21 @@ class AuthController extends Controller {
 		
 	}
 	public function register(Request $request) {
-		$registerModel = new RegisterModel();
+		$user = new User();
 		if ($request->isGet()) {
 			$this->setLayout('guest');
-			return $this->render('register');
+			return $this->render('register', [
+				'model' => $user
+			]);
 		}
-		$registerModel->loadData($request->getBody());
-		if ($registerModel->validate() && $registerModel->register()) {
-			echo '<pre>';
-			var_dump($registerModel);
-			echo'</pre>';
-			exit;
-			return 'success';
+		$user->loadData($request->getBody());
+		if ($user->validate() && $user->save()) {
+			Application::$app->session->setFlash('success', 'Thank for register!');
+			Application::$app->response->redirect("/");
 		}
-		return 'handling submitted data';
+		return $this->render('register', [
+			'model' => $user
+		]);
 		
 	}
 }

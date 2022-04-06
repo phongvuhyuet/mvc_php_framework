@@ -1,10 +1,17 @@
 {
-    "name": "phong/mvc_framework",
-    "authors": [
-        {
-            "name": "phong vu",
-            "email": "vuphonghyuet@gmail.com"
-        }
-    ],
-    "require": {}
+  "name": "phong/mvc_framework",
+  "authors": [
+    {
+      "name": "phong vu",
+      "email": "vuphonghyuet@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "app\\": "./"
+    }
+  },
+  "require": {
+    "vlucas/phpdotenv": "^5.4"
+  }
 }
