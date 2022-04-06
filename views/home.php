@@ -8,4 +8,4 @@ use app\core\Application;
 <div class="alert alert-success">
 	<?php echo Application::$app->session->getFlash('success')['value']?>
 </div>
- <?php endif; ?>
+<?php endif; ?>

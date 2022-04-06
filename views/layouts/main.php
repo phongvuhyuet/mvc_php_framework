@@ -26,18 +26,36 @@
           <a class="nav-link active" aria-current="page" href="/contact">Contact</a>
         </li>
       </ul>
+
+	  <?php
+
+use app\core\Application;
+
+ if (Application::$app->isGuest()) : ?>
+
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/login">Login</a>
         </li>
 		<li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/register">Register</a>
+          <a class="nav-link " aria-current="page" href="/register">Register</a>
         </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+<?php else : ?>
+<ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/logout">Logout</a>
+        </li>
+		<li class="nav-item">
+          <a class="nav-link " aria-current="page" href="/profile">Profile</a>
+        </li>
+		<li class="nav-item">
+			<h5>Welcome <?php echo Application::$app->user->getDisplayName()?></h5>
+        </li>
+      </ul>
+
+	<?php endif; ?>
+      
     </div>
   </div>
 </nav>

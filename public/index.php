@@ -11,6 +11,7 @@ $config = [
 	'user' => $_ENV['DB_USER'],
 	'password' => $_ENV['DB_PASSWORD']
 	]
+	, 'userClass' => 'app\models\User',
 ];
 
 $app = new \app\core\Application(dirname(__DIR__), $config);
@@ -23,4 +24,8 @@ $app->router->get('/login', [\app\controllers\AuthController::class, 'login']);
 $app->router->post('/login', [\app\controllers\AuthController::class, 'login']);
 $app->router->get('/register', [\app\controllers\AuthController::class, 'register']);
 $app->router->post('/register', [\app\controllers\AuthController::class, 'register']);
+// logout post
+$app->router->get('/logout', [\app\controllers\AuthController::class, 'logout']);
+$app->router->get('/profile', [\app\controllers\AuthController::class, 'profile']);
+$app->router->get('dasf', 'profile');
 $app->run();

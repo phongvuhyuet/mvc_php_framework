@@ -4,17 +4,36 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\middlewares\AuthMiddleware;
 use app\core\Request;
+use app\core\Response;
+use app\models\LoginForm;
 use app\models\User;
 
 class AuthController extends Controller {
+	public function __construct()
+	{
+		$this->registerMiddleware(new AuthMiddleware(['profile']));
+	}
 
-	public function login(Request $request) {
+	public function login(Request $request, Response $response) {
+		$loginForm = new LoginForm();
 		if ($request->isGet()) {
 			$this->setLayout('guest');
-			return $this->render('login');
+			return $this->render('login', [
+				'model' => $loginForm
+			]);
 		}
-		return 'handling submitted data';
+		$loginForm->loadData($request->getBody());
+		if ($loginForm->validate() && $loginForm->login()) {
+			$this->setLayout('main');
+			$response->redirect('/');
+			return;
+		}
+		$this->setLayout('guest');
+		return $this->render('login', [
+			'model' => $loginForm
+		]);
 		
 	}
 	public function register(Request $request) {
@@ -34,5 +53,13 @@ class AuthController extends Controller {
 			'model' => $user
 		]);
 		
+	}
+	public function logout(Request $request, Response $response) {
+		Application::$app->logout();
+		$response->redirect('/');
+	}
+
+	public function profile(Request $request, Response $response) {
+		return $this->render('profile');
 	}
 }

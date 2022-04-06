@@ -5,6 +5,7 @@ abstract class DbModel extends Model
 {
 	abstract public function tableName(): string;
 	abstract public function attributes(): array;
+	abstract public function primaryKey(): string;
 	
 	public function save() {
 		$tableName = $this->tableName();
@@ -19,5 +20,18 @@ abstract class DbModel extends Model
 		}
 		$statement->execute();
 		return true;
+	}
+	public static function findOne($where)  {
+		$keys = array_keys($where);
+		$sql = array_map(fn ($key) => "$key = :$key", $keys);
+		$sql = implode("and", $sql);
+		$tableName = static::tableName();
+		$statement = Application::$app->database->prepare("select * from $tableName where $sql");
+
+		foreach ($where as $key => $value) {
+			$statement->bindValue(":$key", $value);
+		}
+		$statement->execute();
+		return $statement->fetchObject(static::class);
 	}
 }
